@@ -1,0 +1,124 @@
+{
+  "nodes": [
+    {
+      "data": {
+        "id": "node1",
+        "hostname": "ABC11.DFG2",
+        "ipv4": "192.168.1.1",
+        "sid": "1001"
+      }
+    },
+    {
+      "data": {
+        "id": "node2",
+        "hostname": "DEF22.GHI3",
+        "ipv4": "192.168.1.2",
+        "sid": "1002"
+      }
+    },
+    {
+      "data": {
+        "id": "node3",
+        "hostname": "GHI33.JKL4",
+        "ipv4": "192.168.1.3",
+        "sid": "1003"
+      }
+    },
+    {
+      "data": {
+        "id": "node4",
+        "hostname": "JKL44.MNO5",
+        "ipv4": "192.168.1.4",
+        "sid": "1004"
+      }
+    },
+    {
+      "data": {
+        "id": "node5",
+        "hostname": "MNO55.PQR6",
+        "ipv4": "192.168.1.5",
+        "sid": "1005"
+      }
+    },
+    {
+      "data": {
+        "id": "node6",
+        "hostname": "PQR66.STU7",
+        "ipv4": "192.168.1.6",
+        "sid": "1006"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "data": {
+        "id": "edge1",
+        "source": "node1",
+        "target": "node2",
+        "sourceLabel": "BE1001",
+        "targetLabel": "Hu0/1/0/1",
+        "middleLabel": "100G"
+      }
+    },
+    {
+      "data": {
+        "id": "edge2",
+        "source": "node1",
+        "target": "node3",
+        "sourceLabel": "BE1002",
+        "targetLabel": "Hu0/1/0/2",
+        "middleLabel": "40G"
+      }
+    },
+    {
+      "data": {
+        "id": "edge3",
+        "source": "node2",
+        "target": "node4",
+        "sourceLabel": "BE1003",
+        "targetLabel": "Hu0/1/0/3",
+        "middleLabel": "2x10G"
+      }
+    },
+    {
+      "data": {
+        "id": "edge4",
+        "source": "node3",
+        "target": "node5",
+        "sourceLabel": "BE1004",
+        "targetLabel": "Hu0/1/0/4",
+        "middleLabel": "100G"
+      }
+    },
+    {
+      "data": {
+        "id": "edge5",
+        "source": "node4",
+        "target": "node6",
+        "sourceLabel": "BE1005",
+        "targetLabel": "Hu0/1/0/5",
+        "middleLabel": "40G"
+      }
+    },
+    {
+      "data": {
+        "id": "edge6",
+        "source": "node5",
+        "target": "node6",
+        "sourceLabel": "BE1006",
+        "targetLabel": "Hu0/1/0/6",
+        "middleLabel": "2x10G"
+      }
+    },
+    {
+      "data": {
+        "id": "edge7",
+        "source": "node2",
+        "target": "node5",
+        "sourceLabel": "BE1007",
+        "targetLabel": "Hu0/1/0/7",
+        "middleLabel": "100G"
+      }
+    }
+  ]
+} 
