@@ -7,10 +7,8 @@ export const nodeStyles = {
     'background-color': '#fff',
     'border-width': 2,
     'border-color': '#666',
-    'label': 'data(label)',
     'text-valign': 'center',
     'text-halign': 'center',
-    'padding': '10px',
-    'white-space': 'pre'
+    'padding': '10px'
   }
 }; 

@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Stack, Paper } from '@mui/material';
 import CytoscapeComponent from 'react-cytoscapejs';
+import cytoscape from 'cytoscape';
+import nodeHtmlLabel from 'cytoscape-node-html-label';
 import graphData from '/graphData.json';
 import { nodeStyles } from '../styles/nodeStyles';
 import { edgeStyles } from '../styles/edgeStyles';
+
+// Register the extension
+cytoscape.use(nodeHtmlLabel);
 
 const MainPage = () => {
   const [elements, setElements] = useState([]);
@@ -71,6 +76,25 @@ const MainPage = () => {
           layout={layout}
           cy={(cy) => {
             cyRef.current = cy;
+            // Initialize node-html-label after cytoscape is ready
+            cy.nodeHtmlLabel([
+              {
+                query: 'node',
+                halign: 'center',
+                valign: 'center',
+                halignBox: 'center',
+                valignBox: 'center',
+                tpl: (data) => {
+                  return `
+                    <div style="text-align: center; font-family: sans-serif;">
+                      <div style="font-weight: bold; font-size: 14px;">${data.hostname}</div>
+                      <div style="font-size: 12px;">${data.ipv4}</div>
+                      <div style="font-size: 12px;">SID: ${data.sid}</div>
+                    </div>
+                  `;
+                }
+              }
+            ]);
           }}
           stylesheet={[nodeStyles, edgeStyles]}
         />
