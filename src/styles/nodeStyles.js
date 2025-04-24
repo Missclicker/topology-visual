@@ -2,8 +2,8 @@ export const nodeStyles = {
   selector: 'node',
   style: {
     'shape': 'roundrectangle',
-    'width': 150,
-    'height': 80,
+    'width': 100,
+    'height': 40,
     'background-color': '#fff',
     'border-width': 2,
     'border-color': '#666',
