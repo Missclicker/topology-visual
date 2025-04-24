@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Box, Button, Stack, Paper } from '@mui/material';
 import CytoscapeComponent from 'react-cytoscapejs';
