@@ -1,26 +1,50 @@
-import React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Stack, Paper } from '@mui/material';
 import CytoscapeComponent from 'react-cytoscapejs';
-import axios from 'axios';
+import graphData from '/graphData.json';
+import { nodeStyles } from '../styles/nodeStyles';
+import { edgeStyles } from '../styles/edgeStyles';
 
 const MainPage = () => {
-  const [elements, setElements] = useState({
-    nodes: [],
-    edges: []
-  });
+  const [elements, setElements] = useState([]);
   const cyRef = useRef(null);
 
-  // Example layout options
   const layout = {
     name: 'cose',
     padding: 30,
     animate: true
   };
 
+  useEffect(() => {
+    setElements(graphData);
+  }, []);
+
   const handleButtonClick = (action) => {
-    // This will be implemented based on specific requirements
-    console.log(`Button clicked: ${action}`);
+    const cy = cyRef.current;
+    if (!cy) return;
+
+    switch (action) {
+      case 'refresh':
+        cy.layout(layout).run();
+        break;
+      case 'hide-edges':
+        cy.edges().style('display', 'none');
+        break;
+      case 'show-all':
+        cy.elements().style('display', 'element');
+        break;
+      case 'highlight-critical':
+        cy.nodes().forEach((n) => {
+          if (n.data('sid') > 400) {
+            n.style('background-color', '#f00');
+          } else {
+            n.style('background-color', '#fff');
+          }
+        });
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -39,7 +63,7 @@ const MainPage = () => {
           Highlight Critical
         </Button>
       </Stack>
-      
+
       <Paper elevation={3} sx={{ height: '80vh', width: '100%' }}>
         <CytoscapeComponent
           elements={CytoscapeComponent.normalizeElements(elements)}
@@ -48,28 +72,11 @@ const MainPage = () => {
           cy={(cy) => {
             cyRef.current = cy;
           }}
-          stylesheet={[
-            {
-              selector: 'node',
-              style: {
-                'background-color': '#666',
-                'label': 'data(label)'
-              }
-            },
-            {
-              selector: 'edge',
-              style: {
-                'width': 3,
-                'line-color': '#ccc',
-                'target-arrow-color': '#ccc',
-                'target-arrow-shape': 'triangle'
-              }
-            }
-          ]}
+          stylesheet={[nodeStyles, edgeStyles]}
         />
       </Paper>
     </Box>
   );
 };
 
-export default MainPage; 
+export default MainPage;
