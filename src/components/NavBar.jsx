@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const NavBar = () => {
   return (
     <AppBar position="static" sx={{
-      background: 'linear-gradient(45deg, #2e7d32 30%, #4caf50 90%)'
+      background: 'linear-gradient(45deg, #4caf50 90%, #2e7d32 30%)'
     }}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
