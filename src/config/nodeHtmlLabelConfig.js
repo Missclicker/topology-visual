@@ -1,10 +1,10 @@
 export const nodeHtmlLabelConfig = [
   {
-    query: 'node',
-    halign: 'center',
-    valign: 'center',
-    halignBox: 'center',
-    valignBox: 'center',
+    query: "node",
+    halign: "center",
+    valign: "center",
+    halignBox: "center",
+    valignBox: "center",
     tpl: (data) => {
       return `
         <div style="text-align: center; font-family: sans-serif;">
@@ -13,6 +13,6 @@ export const nodeHtmlLabelConfig = [
           <div style="font-size: 12px;">SID: ${data.sid}</div>
         </div>
       `;
-    }
-  }
-]; 
+    },
+  },
+];

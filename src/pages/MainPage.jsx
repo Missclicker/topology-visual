@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Box, Button, Stack, Paper } from '@mui/material';
-import CytoscapeComponent from 'react-cytoscapejs';
-import cytoscape from 'cytoscape';
-import nodeHtmlLabel from 'cytoscape-node-html-label';
-import graphData from '/graphData.json';
-import { nodeStyles } from '../styles/nodeStyles';
-import { edgeStyles } from '../styles/edgeStyles';
-import { initializeCytoscape, WHEEL_SENSITIVITY, ZOOM_LEVEL, PAN_LEVEL } from '../config/cytoscapeConfig';
+import React, { useState, useEffect, useRef } from "react";
+import { Box, Button, Stack, Paper } from "@mui/material";
+import CytoscapeComponent from "react-cytoscapejs";
+import cytoscape from "cytoscape";
+import nodeHtmlLabel from "cytoscape-node-html-label";
+import graphData from "/graphData.json";
+import { nodeStyles } from "../styles/nodeStyles";
+import { edgeStyles } from "../styles/edgeStyles";
+import {
+  initializeCytoscape,
+  WHEEL_SENSITIVITY,
+  ZOOM_LEVEL,
+  PAN_LEVEL,
+} from "../config/cytoscapeConfig";
 
 // Register the extension
 cytoscape.use(nodeHtmlLabel);
@@ -16,17 +21,17 @@ const MainPage = () => {
   const cyRef = useRef();
   // Create a deep copy of the original graph data
   const originalGraphData = JSON.parse(JSON.stringify(graphData));
-  
+
   // Create a dictionary of initial positions
   const initialPositions = {};
   if (originalGraphData.nodes) {
-    originalGraphData.nodes.forEach(node => {
+    originalGraphData.nodes.forEach((node) => {
       if (node.data && node.position) {
         initialPositions[node.data.id] = node.position;
       }
     });
   }
-  console.log('Initial positions:', initialPositions);
+  console.log("Initial positions:", initialPositions);
 
   useEffect(() => {
     setElements(originalGraphData);
@@ -35,30 +40,32 @@ const MainPage = () => {
   const savePositionsToFile = () => {
     const cy = cyRef.current;
     if (!cy) {
-      console.log('Cytoscape instance not available');
+      console.log("Cytoscape instance not available");
       return;
     }
 
     const currentPositions = {};
-    cy.nodes().forEach(node => {
+    cy.nodes().forEach((node) => {
       const position = node.position();
       currentPositions[node.id()] = {
         x: position.x,
-        y: position.y
+        y: position.y,
       };
     });
 
     // Create a blob with the positions data
-    const blob = new Blob([JSON.stringify(currentPositions, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(currentPositions, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
-    
+
     // Create a temporary link element to trigger the download
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = 'node_positions.json';
+    link.download = "node_positions.json";
     document.body.appendChild(link);
     link.click();
-    
+
     // Clean up
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
@@ -67,18 +74,21 @@ const MainPage = () => {
   const handleButtonClick = (action) => {
     const cy = cyRef.current;
     if (!cy) {
-      console.log('Cytoscape instance not available');
+      console.log("Cytoscape instance not available");
       return;
     }
 
     switch (action) {
-      case 'refresh': {
-        console.log('Resetting positions...');
+      case "refresh": {
+        console.log("Resetting positions...");
         // Update positions of all nodes to their initial positions
-        cy.nodes().forEach(node => {
+        cy.nodes().forEach((node) => {
           const nodeId = node.id();
           if (initialPositions[nodeId]) {
-            console.log(`Setting position for ${nodeId}:`, initialPositions[nodeId]);
+            console.log(
+              `Setting position for ${nodeId}:`,
+              initialPositions[nodeId]
+            );
             node.position(initialPositions[nodeId]);
           }
         });
@@ -87,22 +97,22 @@ const MainPage = () => {
         cy.pan({ x: PAN_LEVEL, y: PAN_LEVEL });
         break;
       }
-      case 'hide-edges':
-        cy.edges().style('display', 'none');
+      case "hide-edges":
+        cy.edges().style("display", "none");
         break;
-      case 'show-all':
-        cy.elements().style('display', 'element');
+      case "show-all":
+        cy.elements().style("display", "element");
         break;
-      case 'highlight-critical':
+      case "highlight-critical":
         cy.nodes().forEach((n) => {
-          if (n.data('sid') > 400) {
-            n.style('background-color', '#f00');
+          if (n.data("sid") > 400) {
+            n.style("background-color", "#f00");
           } else {
-            n.style('background-color', '#fff');
+            n.style("background-color", "#fff");
           }
         });
         break;
-      case 'save-positions':
+      case "save-positions":
         savePositionsToFile();
         break;
       default:
@@ -113,27 +123,37 @@ const MainPage = () => {
   return (
     <Box>
       <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
-        <Button variant="contained" onClick={() => handleButtonClick('refresh')}>
+        <Button
+          variant="contained"
+          onClick={() => handleButtonClick("refresh")}>
           Reset View
         </Button>
-        <Button variant="contained" onClick={() => handleButtonClick('hide-edges')}>
+        <Button
+          variant="contained"
+          onClick={() => handleButtonClick("hide-edges")}>
           Hide Edges
         </Button>
-        <Button variant="contained" onClick={() => handleButtonClick('show-all')}>
+        <Button
+          variant="contained"
+          onClick={() => handleButtonClick("show-all")}>
           Show All
         </Button>
-        <Button variant="contained" onClick={() => handleButtonClick('highlight-critical')}>
+        <Button
+          variant="contained"
+          onClick={() => handleButtonClick("highlight-critical")}>
           Highlight Critical
         </Button>
-        <Button variant="contained" onClick={() => handleButtonClick('save-positions')}>
+        <Button
+          variant="contained"
+          onClick={() => handleButtonClick("save-positions")}>
           Save Positions
         </Button>
       </Stack>
 
-      <Paper elevation={3} sx={{ height: '80vh', width: '100%' }}>
+      <Paper elevation={3} sx={{ height: "80vh", width: "100%" }}>
         <CytoscapeComponent
           elements={CytoscapeComponent.normalizeElements(elements)}
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: "100%", height: "100%" }}
           wheelSensitivity={WHEEL_SENSITIVITY}
           cy={(cy) => {
             cyRef.current = cy;

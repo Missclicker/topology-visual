@@ -1,4 +1,4 @@
-import { nodeHtmlLabelConfig } from './nodeHtmlLabelConfig';
+import { nodeHtmlLabelConfig } from "./nodeHtmlLabelConfig";
 
 export const WHEEL_SENSITIVITY = 0.4;
 export const ZOOM_LEVEL = 1;
@@ -13,13 +13,13 @@ export const initializeCytoscape = (cy) => {
   cy.zoomingEnabled(true);
   cy.minZoom(0.2);
   cy.maxZoom(10.0);
-  
+
   // Node interaction settings
   cy.autoungrabify(false); // Allow node dragging
   cy.autolock(false); // Allow node movement
-  
+
   // Initialize node HTML labels
   cy.nodeHtmlLabel(nodeHtmlLabelConfig);
-  
+
   return cy;
-}; 
+};

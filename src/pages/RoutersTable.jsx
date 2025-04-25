@@ -1,7 +1,17 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@mui/material';
-import axios from 'axios';
+import React from "react";
+import { useState, useEffect } from "react";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Box,
+} from "@mui/material";
+import axios from "axios";
 
 const RoutersTable = () => {
   const [routers, setRouters] = useState([]);
@@ -14,7 +24,7 @@ const RoutersTable = () => {
         // const response = await axios.get('http://localhost:8000/api/routers');
         // setRouters(response.data);
       } catch (error) {
-        console.error('Error fetching routers:', error);
+        console.error("Error fetching routers:", error);
       }
     };
 
@@ -54,4 +64,4 @@ const RoutersTable = () => {
   );
 };
 
-export default RoutersTable; 
+export default RoutersTable;

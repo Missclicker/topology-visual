@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { Box, Typography, Paper } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
-import axios from 'axios';
-import isisLinksData from '../../isisLinksData.json';
+import React from "react";
+import { useState, useEffect } from "react";
+import { Box, Typography, Paper } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+import axios from "axios";
+import isisLinksData from "../../isisLinksData.json";
 
 const IsisLinksTable = () => {
   const [links, setLinks] = useState([]);
@@ -31,25 +31,91 @@ const IsisLinksTable = () => {
   }, []);
 
   const columns = [
-    { field: 'HOSTNAME', headerName: 'Hostname', width: 150, sortable: true, filterable: true },
-    { field: 'ISIS', headerName: 'ISIS', width: 100, sortable: true, filterable: true },
-    { field: 'IFNAME', headerName: 'Interface', width: 150, sortable: true, filterable: true },
-    { field: 'IF_STATUS', headerName: 'Status', width: 120, sortable: true, filterable: true },
-    { field: 'ADJ_FORM', headerName: 'Adjacency', width: 120, sortable: true, filterable: true },
-    { field: 'BW', headerName: 'Bandwidth', width: 120, sortable: true, filterable: true },
-    { field: 'PEER_COUNT', headerName: 'Peers', width: 100, sortable: true, filterable: true },
-    { field: 'METRIC_L2', headerName: 'L2 Metric', width: 120, sortable: true, filterable: true },
-    { field: 'FW_IP', headerName: 'Forward IP', width: 150, sortable: true, filterable: true },
-    { field: 'GW_IP', headerName: 'Gateway IP', width: 150, sortable: true, filterable: true },
-    { field: 'METRIC_TE', headerName: 'TE Metric', width: 120, sortable: true, filterable: true },
+    {
+      field: "HOSTNAME",
+      headerName: "Hostname",
+      width: 150,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "ISIS",
+      headerName: "ISIS",
+      width: 100,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "IFNAME",
+      headerName: "Interface",
+      width: 150,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "IF_STATUS",
+      headerName: "Status",
+      width: 120,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "ADJ_FORM",
+      headerName: "Adjacency",
+      width: 120,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "BW",
+      headerName: "Bandwidth",
+      width: 120,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "PEER_COUNT",
+      headerName: "Peers",
+      width: 100,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "METRIC_L2",
+      headerName: "L2 Metric",
+      width: 120,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "FW_IP",
+      headerName: "Forward IP",
+      width: 150,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "GW_IP",
+      headerName: "Gateway IP",
+      width: 150,
+      sortable: true,
+      filterable: true,
+    },
+    {
+      field: "METRIC_TE",
+      headerName: "TE Metric",
+      width: 120,
+      sortable: true,
+      filterable: true,
+    },
   ];
 
   return (
-    <Box sx={{ height: '100%', width: '100%' }}>
+    <Box sx={{ height: "100%", width: "100%" }}>
       <Typography variant="h4" gutterBottom>
         ISIS Links
       </Typography>
-      <Paper sx={{ height: 'calc(100vh - 200px)', width: '100%' }}>
+      <Paper sx={{ height: "calc(100vh - 200px)", width: "100%" }}>
         <DataGrid
           rows={links}
           columns={columns}
@@ -69,4 +135,4 @@ const IsisLinksTable = () => {
   );
 };
 
-export default IsisLinksTable; 
+export default IsisLinksTable;
