@@ -6,32 +6,55 @@ import nodeHtmlLabel from 'cytoscape-node-html-label';
 import graphData from '/graphData.json';
 import { nodeStyles } from '../styles/nodeStyles';
 import { edgeStyles } from '../styles/edgeStyles';
+import { initializeCytoscape, WHEEL_SENSITIVITY, ZOOM_LEVEL, PAN_LEVEL } from '../config/cytoscapeConfig';
 
 // Register the extension
 cytoscape.use(nodeHtmlLabel);
 
 const MainPage = () => {
   const [elements, setElements] = useState([]);
-  const cyRef = useRef(null);
-
-  const layout = {
-    name: 'cose',
-    padding: 30,
-    animate: true
-  };
+  const cyRef = useRef();
+  // Create a deep copy of the original graph data
+  const originalGraphData = JSON.parse(JSON.stringify(graphData));
+  
+  // Create a dictionary of initial positions
+  const initialPositions = {};
+  if (originalGraphData.nodes) {
+    originalGraphData.nodes.forEach(node => {
+      if (node.data && node.position) {
+        initialPositions[node.data.id] = node.position;
+      }
+    });
+  }
+  console.log('Initial positions:', initialPositions);
 
   useEffect(() => {
-    setElements(graphData);
+    setElements(originalGraphData);
   }, []);
 
   const handleButtonClick = (action) => {
     const cy = cyRef.current;
-    if (!cy) return;
+    if (!cy) {
+      console.log('Cytoscape instance not available');
+      return;
+    }
 
     switch (action) {
-      case 'refresh':
-        cy.layout(layout).run();
+      case 'refresh': {
+        console.log('Resetting positions...');
+        // Update positions of all nodes to their initial positions
+        cy.nodes().forEach(node => {
+          const nodeId = node.id();
+          if (initialPositions[nodeId]) {
+            console.log(`Setting position for ${nodeId}:`, initialPositions[nodeId]);
+            node.position(initialPositions[nodeId]);
+          }
+        });
+        // Reset zoom and pan
+        cy.zoom(ZOOM_LEVEL);
+        cy.pan({ x: PAN_LEVEL, y: PAN_LEVEL });
         break;
+      }
       case 'hide-edges':
         cy.edges().style('display', 'none');
         break;
@@ -56,7 +79,7 @@ const MainPage = () => {
     <Box>
       <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
         <Button variant="contained" onClick={() => handleButtonClick('refresh')}>
-          Refresh Graph
+          Reset View
         </Button>
         <Button variant="contained" onClick={() => handleButtonClick('hide-edges')}>
           Hide Edges
@@ -73,28 +96,11 @@ const MainPage = () => {
         <CytoscapeComponent
           elements={CytoscapeComponent.normalizeElements(elements)}
           style={{ width: '100%', height: '100%' }}
-          layout={layout}
+          wheelSensitivity={WHEEL_SENSITIVITY}
           cy={(cy) => {
             cyRef.current = cy;
-            // Initialize node-html-label after cytoscape is ready
-            cy.nodeHtmlLabel([
-              {
-                query: 'node',
-                halign: 'center',
-                valign: 'center',
-                halignBox: 'center',
-                valignBox: 'center',
-                tpl: (data) => {
-                  return `
-                    <div style="text-align: center; font-family: sans-serif;">
-                      <div style="font-weight: bold; font-size: 14px;">${data.hostname}</div>
-                      <div style="font-size: 12px;">${data.ipv4}</div>
-                      <div style="font-size: 12px;">SID: ${data.sid}</div>
-                    </div>
-                  `;
-                }
-              }
-            ]);
+            cy = initializeCytoscape(cy);
+            return cy;
           }}
           stylesheet={[nodeStyles, edgeStyles]}
         />
