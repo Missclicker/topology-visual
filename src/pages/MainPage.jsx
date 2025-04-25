@@ -32,6 +32,38 @@ const MainPage = () => {
     setElements(originalGraphData);
   }, []);
 
+  const savePositionsToFile = () => {
+    const cy = cyRef.current;
+    if (!cy) {
+      console.log('Cytoscape instance not available');
+      return;
+    }
+
+    const currentPositions = {};
+    cy.nodes().forEach(node => {
+      const position = node.position();
+      currentPositions[node.id()] = {
+        x: position.x,
+        y: position.y
+      };
+    });
+
+    // Create a blob with the positions data
+    const blob = new Blob([JSON.stringify(currentPositions, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    // Create a temporary link element to trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'node_positions.json';
+    document.body.appendChild(link);
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const handleButtonClick = (action) => {
     const cy = cyRef.current;
     if (!cy) {
@@ -70,6 +102,9 @@ const MainPage = () => {
           }
         });
         break;
+      case 'save-positions':
+        savePositionsToFile();
+        break;
       default:
         break;
     }
@@ -89,6 +124,9 @@ const MainPage = () => {
         </Button>
         <Button variant="contained" onClick={() => handleButtonClick('highlight-critical')}>
           Highlight Critical
+        </Button>
+        <Button variant="contained" onClick={() => handleButtonClick('save-positions')}>
+          Save Positions
         </Button>
       </Stack>
 
