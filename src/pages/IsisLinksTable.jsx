@@ -8,6 +8,9 @@ import isisLinksData from '../../isisLinksData.json';
 const IsisLinksTable = () => {
   const [links, setLinks] = useState([]);
   const [pageSize, setPageSize] = useState(25);
+  const [filterModel, setFilterModel] = useState({
+    items: [],
+  });
 
   // Commented out API code for future use
   // useEffect(() => {
@@ -28,17 +31,17 @@ const IsisLinksTable = () => {
   }, []);
 
   const columns = [
-    { field: 'HOSTNAME', headerName: 'Hostname', width: 150, sortable: true },
-    { field: 'ISIS', headerName: 'ISIS', width: 100, sortable: true },
-    { field: 'IFNAME', headerName: 'Interface', width: 150, sortable: true },
-    { field: 'IF_STATUS', headerName: 'Status', width: 120, sortable: true },
-    { field: 'ADJ_FORM', headerName: 'Adjacency', width: 120, sortable: true },
-    { field: 'BW', headerName: 'Bandwidth', width: 120, sortable: true },
-    { field: 'PEER_COUNT', headerName: 'Peers', width: 100, sortable: true },
-    { field: 'METRIC_L2', headerName: 'L2 Metric', width: 120, sortable: true },
-    { field: 'FW_IP', headerName: 'Forward IP', width: 150, sortable: true },
-    { field: 'GW_IP', headerName: 'Gateway IP', width: 150, sortable: true },
-    { field: 'METRIC_TE', headerName: 'TE Metric', width: 120, sortable: true },
+    { field: 'HOSTNAME', headerName: 'Hostname', width: 150, sortable: true, filterable: true },
+    { field: 'ISIS', headerName: 'ISIS', width: 100, sortable: true, filterable: true },
+    { field: 'IFNAME', headerName: 'Interface', width: 150, sortable: true, filterable: true },
+    { field: 'IF_STATUS', headerName: 'Status', width: 120, sortable: true, filterable: true },
+    { field: 'ADJ_FORM', headerName: 'Adjacency', width: 120, sortable: true, filterable: true },
+    { field: 'BW', headerName: 'Bandwidth', width: 120, sortable: true, filterable: true },
+    { field: 'PEER_COUNT', headerName: 'Peers', width: 100, sortable: true, filterable: true },
+    { field: 'METRIC_L2', headerName: 'L2 Metric', width: 120, sortable: true, filterable: true },
+    { field: 'FW_IP', headerName: 'Forward IP', width: 150, sortable: true, filterable: true },
+    { field: 'GW_IP', headerName: 'Gateway IP', width: 150, sortable: true, filterable: true },
+    { field: 'METRIC_TE', headerName: 'TE Metric', width: 120, sortable: true, filterable: true },
   ];
 
   return (
@@ -53,19 +56,13 @@ const IsisLinksTable = () => {
           getRowId={(row) => `${row.HOSTNAME}-${row.IFNAME}`}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          rowsPerPageOptions={[10, 25, 50, 100]}
+          pageSizeOptions={[25, 50, 100]}
           pagination
           disableSelectionOnClick
-          sortingMode="server"
-          sx={{
-            '& .MuiDataGrid-cell': {
-              fontSize: '0.875rem',
-            },
-            '& .MuiDataGrid-columnHeader': {
-              fontSize: '0.875rem',
-              fontWeight: 'bold',
-            },
-          }}
+          sortingMode="client"
+          filterMode="client"
+          filterModel={filterModel}
+          onFilterModelChange={(model) => setFilterModel(model)}
         />
       </Paper>
     </Box>
